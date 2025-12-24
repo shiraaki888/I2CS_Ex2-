@@ -1,28 +1,29 @@
 package Ex2;
 
 public class Index2D implements Pixel2D {
+    private int x;
+    private int y;
+    private Pixel2D pixel2D;
     public Index2D(int w, int h) {
-        ;
+        x = w;
+        y = h;
     }
     public Index2D(Pixel2D other) {
-        ;
+        pixel2D=other;
     }
     @Override
     public int getX() {
-
-        return 0;
+        return x;
     }
 
     @Override
     public int getY() {
-
-        return 0;
+        return y;
     }
 
     @Override
     public double distance2D(Pixel2D p2) {
-
-        return 0;
+        return Math.sqrt(x*p2.getX() + y*p2.getY());
     }
 
     @Override

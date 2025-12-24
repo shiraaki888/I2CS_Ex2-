@@ -9,6 +9,10 @@ import java.io.Serializable;
  */
 public class Map implements Map2D, Serializable{
 
+    private int[][]  map;
+    private int  w;
+    private int  h;
+
     // edit this class below
 	/**
 	 * Constructs a w*h 2D raster map with an init value v.
@@ -32,7 +36,14 @@ public class Map implements Map2D, Serializable{
 	}
 	@Override
 	public void init(int w, int h, int v) {
-
+        this.w = w;
+        this.h = h;
+        map = new int[w][h];
+        for (int i = 0; i < w; i++) {
+            for (int j = 0; j < h; j++) {
+                map[i][j] = v;
+            }
+        }
 	}
 	@Override
 	public void init(int[][] arr) {
@@ -40,41 +51,31 @@ public class Map implements Map2D, Serializable{
 	}
 	@Override
 	public int[][] getMap() {
-		int[][] ans = null;
-
-		return ans;
+		return map;
 	}
 	@Override
 	public int getWidth() {
-        int ans = -1;
-
-        return ans;
+        return this.w;
     }
 	@Override
 	public int getHeight() {
-        int ans = -1;
-
-        return ans;
+        return this.h;
     }
 	@Override
 	public int getPixel(int x, int y) {
-        int ans = -1;
-
-        return ans;
+        return map[x][y];
     }
 	@Override
 	public int getPixel(Pixel2D p) {
-        int ans = -1;
-
-        return ans;
+        return map[p.getX()][p.getY()];
 	}
 	@Override
 	public void setPixel(int x, int y, int v) {
-
+    map[x][y] = v;
     }
 	@Override
 	public void setPixel(Pixel2D p, int v) {
-
+    map[p.getX()][p.getY()] = v;
 	}
 
     @Override
