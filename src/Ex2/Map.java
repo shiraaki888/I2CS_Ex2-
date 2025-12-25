@@ -152,7 +152,7 @@ public class Map implements Map2D, Serializable {
         int[][] updatedArr = new int[updatedW][updatedH];
         for (int i = 0; i < updatedW; i++) {
             for (int j = 0; j < updatedH; j++) {
-                if (i <= this.w && j <= this.h) updatedArr[i][j] = map[i][j];
+                if (i < this.w && j < this.h) updatedArr[i][j] = map[i][j];
                 else updatedArr[i][j] = this.v;
             }
         }
