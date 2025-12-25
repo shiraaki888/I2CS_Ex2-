@@ -69,6 +69,8 @@ public class Map implements Map2D, Serializable {
         if (arr == null) {
             throw new RuntimeException("Array is null");
         }
+        this.w = arr.length;
+        this.h = arr[0].length;
         this.map = new int[w][h];
         for (int i = 0; i < w; i++) {
             this.map[i] = Arrays.copyOf(arr[i], arr.length);
@@ -306,7 +308,7 @@ for (Pixel2D p: path.keySet()) {
             for (int[] d : directions) {
                 int newX = x + d[0];
                 int newY = y + d[1];
-                if (newX<=this.w && newX>=0 && newY<=this.h && newY>=0) {
+                if (newX<this.w && newX>=0 && newY<this.h && newY>=0) {
                     Pixel2D newPixel = new Index2D(newX, newY);
                     if (!path.containsKey(newPixel) && isValid.apply(colorToCheck).test(p,newPixel)) {
                         q.add(newPixel);
