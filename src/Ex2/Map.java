@@ -270,30 +270,6 @@ for (Pixel2D p: path.keySet()) {
 
     ////////////////////// Private Methods ///////////////////////
 
-//    private HashMap<Pixel2D, Integer> bfs(Pixel2D start, int colorToCheck, Function<Integer,BiPredicate<Pixel2D,Pixel2D>> isValid){
-//        Queue <Pixel2D> q = new LinkedList<Pixel2D>();
-//        HashMap<Pixel2D, Integer> path = new HashMap<Pixel2D, Integer>();
-//        q.add(start);
-//        path.put(start, 0);
-//        int[][] directions = new int[][]{{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
-//        while (!q.isEmpty()){
-//            Pixel2D p = q.poll();
-//            int x = p.getX();
-//            int y = p.getY();
-//            for (int[] d : directions) {
-//                int newX = x + d[0];
-//                int newY = y + d[1];
-//                if (newX<=this.w && newX>=0 && newY<=this.h && newY>=0) {
-//                    Pixel2D newPixel = new Index2D(newX, newY);
-//                    if (!path.containsKey(newPixel) && isValid.apply(colorToCheck).test(p,newPixel)) {
-//                        q.add(newPixel);
-//                        path.put(newPixel, path.getOrDefault(newPixel, 0) + 1);
-//                    }
-//                }
-//            }
-//        }
-//        return path;
-//    }
 
     private HashMap<Pixel2D, Pixel2D> bfs(Pixel2D start, int colorToCheck, Function<Integer,BiPredicate<Pixel2D,Pixel2D>> isValid){
         Queue <Pixel2D> q = new LinkedList<Pixel2D>();
