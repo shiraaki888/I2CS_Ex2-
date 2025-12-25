@@ -13,6 +13,8 @@ public class Index2D implements Pixel2D {
         y = h;
     }
     public Index2D(Pixel2D other) {
+        this.x = other.getX();
+        this.y = other.getY();
         pixel2D=other;
     }
     @Override

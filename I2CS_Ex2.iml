@@ -23,5 +23,7 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" exported="" name="stdlib" level="project" />
+    <orderEntry type="library" name="github.fracpete.princeton.java.stdlib" level="project" />
   </component>
 </module>
