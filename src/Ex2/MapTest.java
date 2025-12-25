@@ -17,6 +17,8 @@ class MapTest {
     @BeforeEach
     public void setuo() {
         _m3_3 = new Map(_map_3_3);
+        _m0 = new Map(5, 5, 0);
+        _m1 = new Map(5, 5, 0);
     }
     @Test
     @Timeout(value = 1, unit = SECONDS)
@@ -78,13 +80,11 @@ class MapTest {
         assertTrue(map.isInside(new Index2D(0, 0)));
         assertTrue(map.isInside(new Index2D(9, 9)));
 
-        // Note: In your implementation isInside checks "<=", so 10,10 is technically "inside"
-        // if w=10. Usually indices go 0 to w-1.
-        // Based on your code: if (this.w >= x ...), so index 10 is inside a width 10 map.
-        assertTrue(map.isInside(new Index2D(10, 10)));
+        // 10 is out of bounds for size 10 (valid indices are 0..9)
+        assertFalse(map.isInside(new Index2D(10, 10)));
 
         assertFalse(map.isInside(new Index2D(11, 5)));
-        assertFalse(map.isInside(new Index2D(-1, 0)));
+        assertFalse(map.isInside(new Index2D(-1, 0))); // This will now pass
     }
 
     @Test
