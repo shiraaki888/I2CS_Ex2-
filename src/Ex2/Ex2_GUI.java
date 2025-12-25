@@ -1,5 +1,5 @@
 package Ex2;
-
+import edu.princeton.cs.introcs.StdDraw;
 /**
  * Intro2CS_2026A
  * This class represents a Graphical User Interface (GUI) for Map2D.
@@ -12,6 +12,7 @@ package Ex2;
 public class Ex2_GUI {
     public static void drawMap(Map2D map) {
         //
+
     }
 
     /**
@@ -20,7 +21,6 @@ public class Ex2_GUI {
      */
     public static Map2D loadMap(String mapFileName) {
         Map2D ans = null;
-
         return ans;
     }
 
