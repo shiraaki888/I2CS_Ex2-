@@ -21,7 +21,6 @@ class Index2DTest {
         assertEquals(3, copy.getX());
         assertEquals(7, copy.getY());
 
-
         assertNotSame(original, copy);
     }
 
@@ -30,10 +29,8 @@ class Index2DTest {
         Index2D p1 = new Index2D(0, 0);
         Index2D p2 = new Index2D(3, 4);
 
-
         assertEquals(5.0, p1.distance2D(p2), 0.0001);
         assertEquals(5.0, p2.distance2D(p1), 0.0001);
-
 
         assertEquals(0.0, p1.distance2D(p1));
     }
@@ -55,7 +52,6 @@ class Index2DTest {
     void testHashCode() {
         Index2D p1 = new Index2D(5, 5);
         Index2D p2 = new Index2D(5, 5);
-
         assertEquals(p1.hashCode(), p2.hashCode());
     }
 
@@ -63,7 +59,6 @@ class Index2DTest {
     void testToString() {
         Index2D p = new Index2D(1, 2);
         String s = p.toString();
-
         assertNotNull(s);
         assertTrue(s.contains("1"));
         assertTrue(s.contains("2"));
