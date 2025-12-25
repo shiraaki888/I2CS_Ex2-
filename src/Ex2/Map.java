@@ -116,8 +116,7 @@ public class Map implements Map2D, Serializable {
     public boolean isInside(Pixel2D p) {
         int x = p.getX();
         int y = p.getY();
-        if (this.w >= x && this.h >= y) return true;
-        return false;
+        return x >= 0 && y >= 0 && x < this.w && y < this.h;
     }
 
     @Override
