@@ -247,24 +247,36 @@ for (Pixel2D p: path.keySet()) {
 
     @Override
     public Map2D allDistance(Pixel2D start, int obsColor, boolean cyclic) {
-        HashMap<Pixel2D, Pixel2D> path = bfs(start, obsColor, color->(pixel1,pixel2)->isColorNotMatch(color,pixel1,pixel2));
+        Map result = new Map(this.w, this.h, -1);
+        Queue<Pixel2D> q = new LinkedList<>();
+        q.add(start);
+        result.setPixel(start, 0);
+        int[][] directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+        while (!q.isEmpty()) {
+            Pixel2D p = q.poll();
+            int currentDist = result.getPixel(p);
+            int x = p.getX();
+            int y = p.getY();
 
-       Pixel2D[] arrPath = path.keySet().toArray(new Pixel2D[0]);
-       Map2D newMap= new Map(w,h,-1);
-       int[][] newArr = new int[w][h];
-        for (int i = 0; i < w; i++) {
-            for (int j = 0; j < h; j++) {
-                newArr[i][j] = -1;
+            for (int[] d : directions) {
+                int newX = x + d[0];
+                int newY = y + d[1];
+
+                if (cyclic) {
+                    newX = (newX + this.w) % this.w;
+                    newY = (newY + this.h) % this.h;
+                }
+
+                if (cyclic || (newX >= 0 && newX < this.w && newY >= 0 && newY < this.h)) {
+                    Pixel2D neighbor = new Index2D(newX, newY)
+                    if (getPixel(newX, newY) != obsColor && result.getPixel(newX, newY) == -1) {
+                        result.setPixel(newX, newY, currentDist + 1);
+                        q.add(neighbor);
+                    }
+                }
             }
         }
-        for (Pixel2D pixel: arrPath) {
-            int x = pixel.getX();
-            int y = pixel.getY();
-            newArr[x][y] = this.map[x][y];
-        }
-
-        newMap.init(newArr);
-        return newMap;
+        return result;
     }
 
 
