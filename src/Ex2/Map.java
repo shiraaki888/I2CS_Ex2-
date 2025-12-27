@@ -270,24 +270,43 @@ for (Pixel2D p: path.keySet()) {
     ////////////////////// Private Methods ///////////////////////
 
 
-    private HashMap<Pixel2D, Pixel2D> bfs(Pixel2D start, int colorToCheck, Function<Integer,BiPredicate<Pixel2D,Pixel2D>> isValid){
-        Queue <Pixel2D> q = new LinkedList<Pixel2D>();
-        HashMap<Pixel2D, Pixel2D> path = new HashMap<Pixel2D, Pixel2D>();
+    private HashMap<Pixel2D, Pixel2D> bfs(Pixel2D start, int colorToCheck, boolean cyclic, Function<Integer, BiPredicate<Pixel2D, Pixel2D>> isValid) {
+        boolean[][] visited = new boolean[this.w][this.h];
+
+        Queue<Pixel2D> q = new LinkedList<>();
+        HashMap<Pixel2D, Pixel2D> path = new HashMap<>();
+
         path.put(start, null);
         q.add(start);
-        int[][] directions = new int[][]{{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
-        while (!q.isEmpty()){
+        visited[start.getX()][start.getY()] = true;
+
+        int[][] directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+
+        while (!q.isEmpty()) {
             Pixel2D p = q.poll();
             int x = p.getX();
             int y = p.getY();
+
             for (int[] d : directions) {
                 int newX = x + d[0];
                 int newY = y + d[1];
-                if (newX<this.w && newX>=0 && newY<this.h && newY>=0) {
-                    Pixel2D newPixel = new Index2D(newX, newY);
-                    if (!path.containsKey(newPixel) && isValid.apply(colorToCheck).test(p,newPixel)) {
-                        q.add(newPixel);
-                        path.put(newPixel, p);
+
+                if (cyclic) {
+                    newX = (newX + this.w) % this.w;
+                    newY = (newY + this.h) % this.h;
+                }
+
+                if (cyclic || (newX >= 0 && newX < this.w && newY >= 0 && newY < this.h)) {
+
+                    if (!visited[newX][newY]) {
+                        Pixel2D newPixel = new Index2D(newX, newY);
+
+
+                        if (isValid.apply(colorToCheck).test(p, newPixel)) {
+                            q.add(newPixel);
+                            path.put(newPixel, p);
+                            visited[newX][newY] = true;
+                        }
                     }
                 }
             }
