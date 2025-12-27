@@ -217,14 +217,17 @@ public class Map implements Map2D, Serializable {
      * Fills this map with the new color (new_v) starting from p.
      * https://en.wikipedia.org/wiki/Flood_fill
      */
+
     public int fill(Pixel2D xy, int new_v, boolean cyclic) {
-        HashMap<Pixel2D, Pixel2D> path = bfs(xy, this.map[xy.getX()][xy.getY()], color->(p1,p2)->isColorMatch(color,p1,p2));
-for (Pixel2D p: path.keySet()) {
-    this.map[p.getX()][p.getY()] = new_v;
-}
+        if(!isInside(xy) && !cyclic) return 0;
+        int oldColor = getPixel(xy);
+        if (oldColor == new_v) return 0;
+        HashMap<Pixel2D, Pixel2D> path = bfs(xy, oldColor, cyclic, color -> (curr, next) -> isColorMatch(color, curr, next));
+        for (Pixel2D p : path.keySet()) {
+            this.map[p.getX()][p.getY()] = new_v;
+        }
         return path.size();
     }
-
     @Override
     /**
      * BFS like shortest the computation based on iterative raster implementation of BFS, see:
@@ -257,7 +260,6 @@ for (Pixel2D p: path.keySet()) {
             int currentDist = result.getPixel(p);
             int x = p.getX();
             int y = p.getY();
-
             for (int[] d : directions) {
                 int newX = x + d[0];
                 int newY = y + d[1];
@@ -268,7 +270,7 @@ for (Pixel2D p: path.keySet()) {
                 }
 
                 if (cyclic || (newX >= 0 && newX < this.w && newY >= 0 && newY < this.h)) {
-                    Pixel2D neighbor = new Index2D(newX, newY)
+                    Pixel2D neighbor = new Index2D(newX, newY);
                     if (getPixel(newX, newY) != obsColor && result.getPixel(newX, newY) == -1) {
                         result.setPixel(newX, newY, currentDist + 1);
                         q.add(neighbor);
@@ -287,36 +289,26 @@ for (Pixel2D p: path.keySet()) {
 
     private HashMap<Pixel2D, Pixel2D> bfs(Pixel2D start, int colorToCheck, boolean cyclic, Function<Integer, BiPredicate<Pixel2D, Pixel2D>> isValid) {
         boolean[][] visited = new boolean[this.w][this.h];
-
         Queue<Pixel2D> q = new LinkedList<>();
         HashMap<Pixel2D, Pixel2D> path = new HashMap<>();
-
         path.put(start, null);
         q.add(start);
         visited[start.getX()][start.getY()] = true;
-
         int[][] directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
-
         while (!q.isEmpty()) {
             Pixel2D p = q.poll();
             int x = p.getX();
             int y = p.getY();
-
             for (int[] d : directions) {
                 int newX = x + d[0];
                 int newY = y + d[1];
-
                 if (cyclic) {
                     newX = (newX + this.w) % this.w;
                     newY = (newY + this.h) % this.h;
                 }
-
                 if (cyclic || (newX >= 0 && newX < this.w && newY >= 0 && newY < this.h)) {
-
                     if (!visited[newX][newY]) {
                         Pixel2D newPixel = new Index2D(newX, newY);
-
-
                         if (isValid.apply(colorToCheck).test(p, newPixel)) {
                             q.add(newPixel);
                             path.put(newPixel, p);
