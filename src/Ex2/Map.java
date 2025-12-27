@@ -73,7 +73,7 @@ public class Map implements Map2D, Serializable {
         this.h = arr[0].length;
         this.map = new int[w][h];
         for (int i = 0; i < w; i++) {
-            this.map[i] = Arrays.copyOf(arr[i], arr.length);
+            this.map[i] = Arrays.copyOf(arr[i], this.h);
         }
     }
 
@@ -152,8 +152,11 @@ public class Map implements Map2D, Serializable {
         int[][] updatedArr = new int[updatedW][updatedH];
         for (int i = 0; i < updatedW; i++) {
             for (int j = 0; j < updatedH; j++) {
-                if (i < this.w && j < this.h) updatedArr[i][j] = map[i][j];
-                else updatedArr[i][j] = this.v;
+                int origX = (int) (i / sx);
+                int origY = (int) (j / sy);
+                origX = Math.min(origX, this.w - 1);
+                origY = Math.min(origY, this.h - 1);
+                updatedArr[i][j] = this.map[origX][origY];
             }
         }
         this.w = updatedW;
