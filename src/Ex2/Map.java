@@ -230,16 +230,19 @@ for (Pixel2D p: path.keySet()) {
      * BFS like shortest the computation based on iterative raster implementation of BFS, see:
      * https://en.wikipedia.org/wiki/Breadth-first_search
      */
+
     public Pixel2D[] shortestPath(Pixel2D p1, Pixel2D p2, int obsColor, boolean cyclic) {
-        HashMap<Pixel2D, Pixel2D> path = bfs(p1, obsColor, color->(pixel1,pixel2)->isColorNotMatch(color,pixel1,pixel2));
-        List<Pixel2D> shortestPath = new ArrayList<>();
-        Pixel2D father=path.getOrDefault(p2,null);
-        if (father==null) return null;
-        while (father!=null) {
-          shortestPath.add(father);
-          father=path.getOrDefault(father,null);
+
+        HashMap<Pixel2D, Pixel2D> parents = bfs(p1, obsColor, cyclic, color -> (curr, next) -> isColorNotMatch(color, curr, next));
+        if (!parents.containsKey(p2)) return null;
+        List<Pixel2D> pathList = new ArrayList<>();
+        Pixel2D current = p2;
+        while (current != null) {
+            pathList.add(current);
+            current = parents.get(current);
         }
-        return shortestPath.toArray(new Pixel2D[0]);
+        Collections.reverse(pathList);
+        return pathList.toArray(new Pixel2D[0]);
     }
 
     @Override
