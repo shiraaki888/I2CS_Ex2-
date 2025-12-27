@@ -129,9 +129,10 @@ public class Map implements Map2D, Serializable {
 
     @Override
     public void addMap2D(Map2D p) {
+        if (!sameDimensions(p)) return;
         for (int i = 0; i < w; i++) {
             for (int j = 0; j < h; j++) {
-                this.map[i][j] = p.getMap()[i][j];
+                this.map[i][j] = p.getPixel(i,j);
             }
         }
     }
@@ -233,7 +234,7 @@ public class Map implements Map2D, Serializable {
             toY = p2.getY();
         }
         for (int i = fromX; i < toX; i++) {
-            for (int j = fromY; j < toY; j++) {
+            for (int j = fromY; j <= toY; j++) {
                 this.map[i][j] = color;
             }
         }
