@@ -175,7 +175,38 @@ public class Map implements Map2D, Serializable {
 
     @Override
     public void drawLine(Pixel2D p1, Pixel2D p2, int color) {
-
+        if (p1.equals(p2)) {
+            setPixel(p1, color);
+            return;
+        }
+        int x1 = p1.getX();
+        int y1 = p1.getY();
+        int x2 = p2.getX();
+        int y2 = p2.getY();
+        int dx = Math.abs(x2 - x1);
+        int dy = Math.abs(y2 - y1);
+        if (dx >= dy) {
+            if (x1 > x2) {
+                drawLine(p2, p1, color);
+                return;
+            }
+            double m = (double) (y2 - y1) / (x2 - x1);
+            for (int x = x1; x <= x2; x++) {
+                double y = y1 + m * (x - x1);
+                setPixel(x, (int) Math.round(y), color);
+            }
+        }
+        else {
+            if (y1 > y2) {
+                drawLine(p2, p1, color);
+                return;
+            }
+            double invM = (double) (x2 - x1) / (y2 - y1);
+            for (int y = y1; y <= y2; y++) {
+                double x = x1 + invM * (y - y1);
+                setPixel((int) Math.round(x), y, color);
+            }
+        }
     }
 
     @Override
