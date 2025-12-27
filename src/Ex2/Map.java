@@ -233,7 +233,7 @@ public class Map implements Map2D, Serializable {
             fromY = p1.getY();
             toY = p2.getY();
         }
-        for (int i = fromX; i < toX; i++) {
+        for (int i = fromX; i <= toX; i++) {
             for (int j = fromY; j <= toY; j++) {
                 this.map[i][j] = color;
             }

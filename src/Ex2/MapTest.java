@@ -15,7 +15,7 @@ class MapTest {
     private int[][] _map_3_3 = {{0,1,0}, {1,0,1}, {0,1,0}};
     private Map2D _m0, _m1, _m3_3;
     @BeforeEach
-    public void setuo() {
+    public void setUp() {
         _m3_3 = new Map(_map_3_3);
         _m0 = new Map(5, 5, 0);
         _m1 = new Map(5, 5, 0);
@@ -136,8 +136,9 @@ class MapTest {
         map.drawRect(p1, p2, 3);
         assertEquals(3, map.getPixel(2, 2));
         assertEquals(3, map.getPixel(3, 3));
-        assertEquals(0, map.getPixel(4, 4));
-        assertEquals(0, map.getPixel(1, 1)); // Outside
+        assertEquals(3, map.getPixel(4, 4));
+        assertEquals(0, map.getPixel(1, 1));
+        assertEquals(0, map.getPixel(5, 5));
     }
 
     @Test
