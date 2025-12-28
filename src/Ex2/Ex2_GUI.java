@@ -66,8 +66,6 @@ public class Ex2_GUI {
     }
 
     public static void initSimpleMaze() {
-        // Simple 15x9 Layout
-        // 1 = Wall, 0 = Empty, 2 = Start, 3 = End
         int[][] layout = {
                 {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
                 {1, 2, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1},
@@ -86,14 +84,12 @@ public class Ex2_GUI {
 
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < cols; c++) {
-                // Flip Y so the visual array matches the screen
                 int y = rows - 1 - r;
                 _map.setPixel(c, y, layout[r][c]);
             }
         }
     }
 
-    // --- Legacy File I/O Methods ---
     public static Map2D loadMap(String mapFileName) {
         Map2D map = null;
         try (BufferedReader br = new BufferedReader(new FileReader(mapFileName))) {

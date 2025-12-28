@@ -81,7 +81,7 @@ class MapTest {
         assertTrue(map.isInside(new Index2D(9, 9)));
         assertFalse(map.isInside(new Index2D(10, 10)));
         assertFalse(map.isInside(new Index2D(11, 5)));
-        assertFalse(map.isInside(new Index2D(-1, 0))); // This will now pass
+        assertFalse(map.isInside(new Index2D(-1, 0)));
     }
 
     @Test
