@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.*;
 import java.util.function.BiPredicate;
 import java.util.function.Function;
-import java.util.function.Predicate;
+
 
 /**
  * This class represents a 2D map (int[w][h]) as a "screen" or a raster matrix or maze over integers.
