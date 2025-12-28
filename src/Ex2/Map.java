@@ -251,6 +251,12 @@ public class Map implements Map2D, Serializable {
     /**
      * Fills this map with the new color (new_v) starting from p.
      * https://en.wikipedia.org/wiki/Flood_fill
+     * in this function we call for the bfs helper method we made to find every pixel that belongs to this shape.
+     * 1.Check: Are we inside the map?
+     * 2.Check: Do we actually need to paint (is the color different)?
+     * 3.Search: Use BFS to find all connected pixels of the oldColor.
+     * 4.Paint: Change the color of every pixel found in step 3.
+     * 5.Finish: Return how many pixels were painted.
      */
 
     public int fill(Pixel2D xy, int new_v, boolean cyclic) {
@@ -267,6 +273,17 @@ public class Map implements Map2D, Serializable {
     /**
      * BFS like shortest the computation based on iterative raster implementation of BFS, see:
      * https://en.wikipedia.org/wiki/Breadth-first_search
+     * Calculates the shortest valid path between two points using Breadth-First Search (BFS).
+     * It avoids pixels marked with the obstacle color (obsColor).
+     *This function calculates the quickest route from a starting point (p1)
+     * to a destination (p2) while navigating around obstacles (like walls in a maze).
+     * Parameters:
+     *p1: The source/starting coordinate.
+     *p2: The destination/target coordinate.
+     *obsColor: The integer value representing "walls" or obstacles that cannot be traversed.
+     *cyclic: If true, the pathfinding can wrap around map edges.
+     *Returns: An array of Pixel2D objects representing the path from p1 to p2, or null if no path exists.
+     *
      */
 
     public Pixel2D[] shortestPath(Pixel2D p1, Pixel2D p2, int obsColor, boolean cyclic) {
@@ -282,6 +299,21 @@ public class Map implements Map2D, Serializable {
         Collections.reverse(pathList);
         return pathList.toArray(new Pixel2D[0]);
     }
+
+    /**
+     * this function creates a new map where every pixel's value represents
+     * the minimum number of steps required to reach it from the start point.
+     *Parameters:
+     *start: The source coordinate.
+     *obsColor: The color to treat as an obstacle (impassable).
+     *cyclic: If true, distance calculations account for wrapping around edges.
+     *Returns: A new Map2D object where values correspond to distances. Unreachable pixels are marked with -1.
+     * Initializes a result map with -1 (unvisited).
+     *Sets the start pixel distance to 0 and adds it to a Queue.
+     *Iteratively polls the queue, examining neighbors (up, down, left, right).
+     *If a neighbor is valid (not an obstacle and unvisited),
+     * sets its distance to current_dist + 1 and adds it to the queue.
+     */
 
     @Override
     public Map2D allDistance(Pixel2D start, int obsColor, boolean cyclic) {
@@ -321,7 +353,19 @@ public class Map implements Map2D, Serializable {
 
     ////////////////////// Private Methods ///////////////////////
 
-
+    /**
+     *This function is a generic internal helper method that performs the graph traversal logic for both fill and shortestPath.
+     *Parameters:
+     *start: The starting pixel.
+     *colorToCheck: The reference color used for validity checks (either the color to match or the obstacle to avoid).
+     *cyclic: Enables wrap-around logic.
+     *isValid: A functional interface (Predicate) that defines the rules for moving from one pixel to the next
+     * Returns: A HashMap mapping each visited pixel to its "parent" (the pixel from which it was discovered).
+     * Uses a Queue<Pixel2D> for the traversal frontier and a boolean[][] array to track visited nodes.
+     *Iterates while the queue is not empty, calculating neighbor coordinates.
+     *Applies the modulo operator if cyclic is true.
+     *If the custom isValid condition is met, records the parent-child relationship in the map and enqueues the neighbor.
+     */
     private HashMap<Pixel2D, Pixel2D> bfs(Pixel2D start, int colorToCheck, boolean cyclic, Function<Integer, BiPredicate<Pixel2D, Pixel2D>> isValid) {
         boolean[][] visited = new boolean[this.w][this.h];
         Queue<Pixel2D> q = new LinkedList<>();
@@ -355,6 +399,16 @@ public class Map implements Map2D, Serializable {
         }
         return path;
     }
+
+    /**
+     *This is a helper function.
+     *Parameters:
+     *color: The target color that defines the shape we are filling (the "old" color).
+     *pixel1: The current pixel the algorithm is standing on.
+     *pixel2: The neighboring pixel the algorithm wants to move to.
+     *Returns: true if both pixels match the target color.
+     */
+
     private boolean isColorMatch(int color, Pixel2D pixel1, Pixel2D pixel2) {
         int x1 = pixel1.getX();
         int y1 = pixel1.getY();
@@ -364,6 +418,16 @@ public class Map implements Map2D, Serializable {
         int color2=this.map[x2][y2];
         return color==color1&&color1==color2;
     }
+
+    /**
+     *This is a helper function.
+     *Parameters:
+     *color: The Obstacle Color . This is the color we must avoid.
+     *pixel1: The current pixel (where you are standing).
+     *pixel2: The neighbor pixel (where you want to step).
+     *Returns: true if the neighbor (pixel2) is safe to walk on (i.e., it is NOT the obstacle color).
+     */
+
     private boolean isColorNotMatch(int color, Pixel2D pixel1, Pixel2D pixel2) {
         int x1 = pixel1.getX();
         int y1 = pixel1.getY();
